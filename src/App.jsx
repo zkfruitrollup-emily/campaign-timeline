@@ -15,7 +15,7 @@ export default function App() {
       {/* Top nav */}
       <div style={{ background: C.bg, borderBottom: `1px solid ${C.border}`, padding: "0 40px", display: "flex", alignItems: "center", gap: "0" }}>
         <div style={{ fontSize: "11px", letterSpacing: "0.2em", color: C.textMuted, textTransform: "uppercase", marginRight: "32px", padding: "16px 0" }}>
-          High Noon
+          Influencer Timeline Tracker
         </div>
         {[
           { id: "forward", label: "Forward Timeline" },
