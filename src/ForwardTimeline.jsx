@@ -115,7 +115,7 @@ export default function ForwardTimeline() {
 
         <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: "4px", padding: "24px", marginBottom: "28px" }}>
           <div style={{ fontSize: "10px", letterSpacing: "0.15em", color: C.textMuted, textTransform: "uppercase", marginBottom: "20px" }}>Visual Timeline — {totalDays} calendar days total</div>
-          <div style={{ position: "relative", height: "80px" }}>
+          <div style={{ position: "relative", height: "120px" }}>
             <div style={{ position: "absolute", top: "32px", left: 0, right: 0, height: "2px", background: C.track }} />
             {timeline.map((phase, i) => {
               if (i === timeline.length - 1) return null;
