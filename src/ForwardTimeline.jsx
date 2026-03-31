@@ -113,34 +113,87 @@ export default function ForwardTimeline() {
           </div>
         </div>
 
-        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: "4px", padding: "24px", marginBottom: "28px" }}>
-          <div style={{ fontSize: "10px", letterSpacing: "0.15em", color: C.textMuted, textTransform: "uppercase", marginBottom: "20px" }}>Visual Timeline — {totalDays} calendar days total</div>
-          <div style={{ position: "relative", height: "120px", paddingTop: "40px" }}>
-            <div style={{ position: "absolute", top: "32px", left: 0, right: 0, height: "2px", background: C.track }} />
+        {/* Visual Bar Timeline */}
+        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: "4px", padding: "24px 24px 20px", marginBottom: "28px" }}>
+          <div style={{ fontSize: "10px", letterSpacing: "0.15em", color: C.textMuted, textTransform: "uppercase", marginBottom: "16px" }}>
+            Visual Timeline — {totalDays} calendar days total
+          </div>
+
+          {/* Date labels row — above bar */}
+          <div style={{ position: "relative", height: "20px", marginBottom: "8px" }}>
+            {timeline.map((phase, i) => {
+              const leftPct = ((phase.date - barStart) / totalSpan) * 100;
+              if (i % 2 !== 0) return null; // only even indexes above
+              return (
+                <div key={phase.id} style={{
+                  position: "absolute", left: `${leftPct}%`, transform: "translateX(-50%)",
+                  fontSize: "9px", color: C.textMid, whiteSpace: "nowrap", fontFamily: "monospace",
+                }}>
+                  {formatDate(phase.date)}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* The bar itself */}
+          <div style={{ position: "relative", height: "18px" }}>
+            <div style={{ position: "absolute", top: "8px", left: 0, right: 0, height: "2px", background: C.track }} />
             {timeline.map((phase, i) => {
               if (i === timeline.length - 1) return null;
-              const next = timeline[i+1];
+              const next = timeline[i + 1];
               const leftPct = ((phase.date - barStart) / totalSpan) * 100;
               const widthPct = ((next.date - phase.date) / totalSpan) * 100;
-              return <div key={phase.id} style={{ position: "absolute", top: "26px", left: `${leftPct}%`, width: `${widthPct}%`, height: "14px", background: PHASES[i+1]?.owner === "influencer" ? C.purple : C.amber, opacity: 0.75 }} />;
+              return (
+                <div key={phase.id} style={{
+                  position: "absolute", top: "4px", left: `${leftPct}%`,
+                  width: `${widthPct}%`, height: "10px",
+                  background: PHASES[i+1]?.owner === "influencer" ? C.purple : C.amber,
+                  opacity: 0.75,
+                }} />
+              );
             })}
             {timeline.map((phase, i) => {
               const leftPct = ((phase.date - barStart) / totalSpan) * 100;
               const dotColor = phase.owner === "influencer" ? C.purple : C.amber;
               return (
-                <div key={phase.id} style={{ position: "absolute", left: `${leftPct}%`, transform: "translateX(-50%)" }}>
-                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: dotColor, position: "absolute", top: "28px", left: "50%", transform: "translateX(-50%)", zIndex: 2, border: `2px solid ${C.bg}`, boxShadow: `0 0 0 1px ${dotColor}` }} />
-                  <div style={{ position: "absolute", [i%2===0?"bottom":"top"]: i%2===0?"52px":"-16px", left: "50%", transform: "translateX(-50%)", fontSize: "9px", color: C.textMid, whiteSpace: "nowrap", fontFamily: "monospace" }}>{formatDate(phase.date)}</div>
+                <div key={phase.id} style={{
+                  position: "absolute", top: "4px", left: `${leftPct}%`, transform: "translateX(-50%)",
+                  width: "10px", height: "10px", borderRadius: "50%", background: dotColor,
+                  border: `2px solid ${C.bg}`, boxShadow: `0 0 0 1px ${dotColor}`, zIndex: 2,
+                }} />
+              );
+            })}
+          </div>
+
+          {/* Date labels row — below bar */}
+          <div style={{ position: "relative", height: "20px", marginTop: "8px" }}>
+            {timeline.map((phase, i) => {
+              const leftPct = ((phase.date - barStart) / totalSpan) * 100;
+              if (i % 2 === 0) return null; // only odd indexes below
+              return (
+                <div key={phase.id} style={{
+                  position: "absolute", left: `${leftPct}%`, transform: "translateX(-50%)",
+                  fontSize: "9px", color: C.textMid, whiteSpace: "nowrap", fontFamily: "monospace",
+                }}>
+                  {formatDate(phase.date)}
                 </div>
               );
             })}
           </div>
-          <div style={{ display: "flex", gap: "20px", marginTop: "16px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><div style={{ width: "12px", height: "3px", background: C.purple }} /><span style={{ fontSize: "10px", color: C.textMuted }}>Influencer phase</span></div>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}><div style={{ width: "12px", height: "3px", background: C.amber }} /><span style={{ fontSize: "10px", color: C.textMuted }}>Client phase</span></div>
+
+          <div style={{ display: "flex", gap: "20px", marginTop: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <div style={{ width: "12px", height: "3px", background: C.purple }} />
+              <span style={{ fontSize: "10px", color: C.textMuted }}>Influencer phase</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <div style={{ width: "12px", height: "3px", background: C.amber }} />
+              <span style={{ fontSize: "10px", color: C.textMuted }}>Client phase</span>
+            </div>
           </div>
         </div>
 
+        {/* Formatted List */}
         <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: "4px", padding: "24px", marginBottom: "20px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
             <div style={{ fontSize: "10px", letterSpacing: "0.15em", color: C.textMuted, textTransform: "uppercase" }}>{campaignName || "Campaign"} · Deadline Schedule</div>
