@@ -127,23 +127,23 @@ export default function ReverseTimeline() {
 
         <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: "4px", padding: "24px", marginBottom: "28px" }}>
           <div style={{ fontSize: "10px", letterSpacing: "0.15em", color: C.textMuted, textTransform: "uppercase", marginBottom: "20px" }}>Visual Timeline — {totalDays} calendar days total</div>
-          <div style={{ position: "relative", height: "80px" }}>
-            <div style={{ position: "absolute", top: "32px", left: 0, right: 0, height: "2px", background: C.track }} />
+          <div style={{ position: "relative", height: "90px" }}>
+            <div style={{ position: "absolute", top: "46px", left: 0, right: 0, height: "2px", background: C.track }} />
             {timeline.map((phase, i) => {
               if (i === timeline.length - 1) return null;
               const next = timeline[i+1];
               const leftPct = ((phase.date - barStart) / totalSpan) * 100;
               const widthPct = ((next.date - phase.date) / totalSpan) * 100;
-              return <div key={phase.id} style={{ position: "absolute", top: "26px", left: `${leftPct}%`, width: `${widthPct}%`, height: "14px", background: PHASES[i+1]?.owner === "influencer" ? C.purple : C.amber, opacity: 0.75 }} />;
+              return <div key={phase.id} style={{ position: "absolute", top: "40px", left: `${leftPct}%`, width: `${widthPct}%`, height: "14px", background: PHASES[i+1]?.owner === "influencer" ? C.purple : C.amber, opacity: 0.75 }} />;
             })}
             {timeline.map((phase, i) => {
               const leftPct = ((phase.date - barStart) / totalSpan) * 100;
-              const isLast = i === timeline.length - 1;
               const dotColor = phase.owner === "influencer" ? C.purple : C.amber;
+              const above = i % 2 === 0;
               return (
-                <div key={phase.id} style={{ position: "absolute", left: `${leftPct}%`, transform: "translateX(-50%)" }}>
-                  <div style={{ width: isLast?"14px":"10px", height: isLast?"14px":"10px", borderRadius: "50%", background: isLast?C.purple:dotColor, position: "absolute", top: isLast?"26px":"28px", left: "50%", transform: "translateX(-50%)", zIndex: 2, border: `2px solid ${C.bg}`, boxShadow: `0 0 0 1px ${isLast?C.purple:dotColor}` }} />
-                  <div style={{ position: "absolute", [i%2===0?"bottom":"top"]: i%2===0?"52px":"-16px", left: "50%", transform: "translateX(-50%)", fontSize: "9px", color: isLast?C.purple:C.textMid, fontWeight: isLast?"700":"400", whiteSpace: "nowrap", fontFamily: "monospace" }}>{formatDate(phase.date)}</div>
+                <div key={phase.id} style={{ position: "absolute", left: `${leftPct}%`, top: 0, bottom: 0, transform: "translateX(-50%)" }}>
+                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: dotColor, position: "absolute", top: "41px", left: "50%", transform: "translateX(-50%)", zIndex: 2, border: `2px solid ${C.bg}`, boxShadow: `0 0 0 1px ${dotColor}` }} />
+                  <div style={{ position: "absolute", ...(above ? { top: "22px" } : { top: "58px" }), left: "50%", transform: "translateX(-50%)", fontSize: "9px", color: C.textMid, whiteSpace: "nowrap", fontFamily: "monospace" }}>{formatDate(phase.date)}</div>
                 </div>
               );
             })}
@@ -185,3 +185,4 @@ export default function ReverseTimeline() {
     </div>
   );
 }
+
